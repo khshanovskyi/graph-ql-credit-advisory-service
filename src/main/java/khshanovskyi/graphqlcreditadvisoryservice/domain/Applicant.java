@@ -1,32 +1,36 @@
 package khshanovskyi.graphqlcreditadvisoryservice.domain;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
-@Table(name = "advisors")
+@Table(name = "applicants")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Advisor extends User {
+public class Applicant extends User {
     private String firstName;
     private String lastName;
+    private String ssn;
 
-    @Enumerated(EnumType.STRING)
-    private AdvisorRole role;
+    @Embedded
+    private Address address;
 
-    @OneToMany(mappedBy = "advisor")
+    @ElementCollection
+    @CollectionTable(name = "phone_numbers")
+    private List<PhoneNumber> phoneNumbers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "applicant")
     private List<Application> applications = new ArrayList<>();
 }

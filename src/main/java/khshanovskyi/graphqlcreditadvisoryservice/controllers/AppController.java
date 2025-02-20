@@ -14,9 +14,12 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
-public class AppleController {
+public class AppController {
+
     private final ApplicationService applicationService;
     private final ApplicationRepository applicationRepository;
     private final AdvisorRepository advisorRepository;
@@ -43,5 +46,20 @@ public class AppleController {
     public Application application(@Argument Long id) {
         return applicationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Application not found"));
+    }
+
+    @QueryMapping
+    public List<Advisor> allAdvisors() {
+        return advisorRepository.findAll();
+    }
+
+    @QueryMapping
+    public List<Applicant> allApplicants() {
+        return applicantRepository.findAll();
+    }
+
+    @QueryMapping
+    public List<Application> allApplications() {
+        return applicationRepository.findAll();
     }
 }

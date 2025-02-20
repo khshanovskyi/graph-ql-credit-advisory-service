@@ -1,35 +1,83 @@
-#type Book {
-#    id: ID!
-#    title: String!
-#    author: Author!
-#    publishYear: Int
-#    genre: String
-#    reviews: [Review]
-#}
-#
-#type Author {
-#    id: ID!
-#    name: String!
-#    biography: String
-#    books: [Book]
-#}
-#
-#type Review {
-#    id: ID!
-#    rating: Int!
-#    comment: String
-#    book: Book!
-#}
-#
-#type Query {
-#    bookById(id: ID!): Book
-#    allBooks: [Book]
-#    authorById(id: ID!): Author
-#    allAuthors: [Author]
-#}
-#
-#type Mutation {
-#    addBook(title: String!, authorId: ID!, publishYear: Int, genre: String): Book
-#    addReview(bookId: ID!, rating: Int!, comment: String): Review
-#    updateBook(id: ID!, title: String, publishYear: Int, genre: String): Book
-#}
+# Place this file in src/main/resources/graphql/schema.graphqls
+
+type Query {
+    advisor(id: ID!): Advisor
+    applicant(id: ID!): Applicant
+    application(id: ID!): Application
+
+    # List queries
+    allAdvisors: [Advisor!]!
+    allApplicants: [Applicant!]!
+    allApplications: [Application!]!
+}
+
+type Mutation {
+    assignApplication(advisorId: ID!): Application
+}
+
+type Advisor {
+    id: ID!
+    email: String!
+    cognitoUsername: String!
+    firstName: String!
+    lastName: String!
+    role: AdvisorRole!
+    applications: [Application!]!
+}
+
+type Applicant {
+    id: ID!
+    email: String!
+    cognitoUsername: String!
+    firstName: String!
+    lastName: String!
+    ssn: String!
+    address: Address!
+    phoneNumbers: [PhoneNumber!]!
+    applications: [Application!]!
+}
+
+type Application {
+    id: ID!
+    amount: Float!
+    status: ApplicationStatus!
+    createdAt: String!
+    assignedAt: String
+    resolvedAt: String
+    applicant: Applicant!
+    advisor: Advisor
+}
+
+type Address {
+    city: String!
+    street: String!
+    number: String!
+    zip: String!
+    apt: String
+}
+
+type PhoneNumber {
+    number: String!
+    type: PhoneType!
+}
+
+enum AdvisorRole {
+    ASSOCIATE
+    PARTNER
+    SENIOR
+}
+
+enum ApplicationStatus {
+    NEW
+    ASSIGNED
+    ON_HOLD
+    APPROVED
+    CANCELED
+    DECLINED
+}
+
+enum PhoneType {
+    HOME
+    WORK
+    MOBILE
+}

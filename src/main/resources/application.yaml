@@ -1,1 +1,12 @@
-spring.application.name=graph-ql-credit-advisory-service
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/credit_advisory
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  graphql:
+    graphiql:
+      enabled: true
